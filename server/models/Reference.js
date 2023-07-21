@@ -1,23 +1,24 @@
 const mongoose = require('mongoose')
 const {Schema} = mongoose
+
 const referenceSchema  = new Schema({
     contact_id:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Contact'
     },
-    name: {
+    rname: {
       type: String,
       required: true
     },
-    phone:{
+    rphone:{
         type: String,
         required: true
     },
-    email:{
+    remail:{
       type: String,
       required: true
     },
-    contact_relation:{
+    rcontact_relation:{
       type: String,
       required: true
     }

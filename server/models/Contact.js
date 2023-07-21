@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const ContactSchema = new Schema({
+  User_id: {
+    type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+  },
   name:{
     type: String,
     required: true
@@ -24,8 +28,7 @@ court:{
   required: true
 },
 advocate:{
-    type: String,
-    required: true
+    type: String
 },
 field_of_practice:{
   type: String,
