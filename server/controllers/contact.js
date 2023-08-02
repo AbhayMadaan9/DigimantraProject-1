@@ -10,8 +10,7 @@ const add = async (req, res) => {
   const { name, phone, email, district, court, advocate, field_of_practice, relation, contacted, remark, reference_name, reference_email, reference_phone, reference_contact_relation, user_id } = req.body;
   try {
     //check if contact already exist
-    const user = await Contact.findOne({ email: email });
-
+    const user = await Contact.findOne({ email: email})
     if (user == null) {
       //add contact on contact document
       const addContact = await Contact.create({
@@ -27,11 +26,11 @@ const add = async (req, res) => {
         contacted: contacted,
         remark: remark
       })
-      await addContact.save();
+      const data =  await addContact.save();
       //adding reference in document of reference collection
       //get the id of added contact 
-      const data = await Contact.findOne({ email: email })
       const addreference = await Reference.create({
+        User_id: user_id,
         contact_id: data._id,
         rname: reference_name,
         remail: reference_email,
@@ -63,7 +62,6 @@ const add = async (req, res) => {
 
 }
 const list = async (req, res) => {
-  console.log(req.query)
   try {
     const query = req.query;
     const filter = {};
@@ -136,17 +134,38 @@ const listCourts = async (req, res) => {
 
 }
 const getreference = async (req, res) => {
-  const { contact_id } = req.query;
+  const { contact_id} = req.query;
   try {
-
     const data = await Reference.find({contact_id: contact_id});
     return res.status(200).send(data)
   } catch (error) {
     console.log(error)
   }
-
 }
-
+const listreferences = async(req, res)=>{
+  const {user_id} = req.query; //user id
+  try {
+    await Reference.distinct("rname", { User_id: user_id }, (err, referencesnames) => {
+      if (err) {
+        return res.status(500).send(err.message)
+      } else {
+        
+        return res.status(200).send(referencesnames)
+      }
+    }).populate('User_id');
+  } catch (error) {
+    console.log(error)
+  }
+}
+const getreferencebyname = async (req, res) => {
+  const { name} = req.query;
+  try {
+    const data = await Reference.findOne({rname: name});
+    return res.status(200).send(data)
+  } catch (error) {
+    console.log(error)
+  }
+}
 const update = async (req, res) => {
   const {id, name, phone, email, district, court, advocate, field_of_practice, relation, contacted, remark, reference_name, reference_email, reference_phone, reference_contact_relation } = req.body;
   try {
@@ -174,4 +193,4 @@ const deletee = async (req, res) => {
   }
 
 }
-module.exports = { add, list, update, deletee, listCourts, listDistricts, getreference }
+module.exports = { add, list, update, deletee, listCourts, listDistricts, getreference, listreferences, getreferencebyname }

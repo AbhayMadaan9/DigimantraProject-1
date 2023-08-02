@@ -9,6 +9,8 @@ router.get('/listDistricts', contact.listDistricts)
 router.get('/listCourts', contact.listCourts)
 router.put('/update', contact.update)
 router.delete('/delete', contact.deletee) 
-router.post('/reference', contact.getreference) 
+router.get('/references', contact.getreference) 
+router.get('/listreferences', contact.listreferences) 
+router.get('/refdetails', contact.getreferencebyname) 
 
 module.exports = router

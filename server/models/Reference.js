@@ -2,6 +2,10 @@ const mongoose = require('mongoose')
 const {Schema} = mongoose
 
 const referenceSchema  = new Schema({
+  User_id: {
+    type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+  },
     contact_id:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Contact'
